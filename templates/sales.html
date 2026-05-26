@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Record New Sale</h6>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('main.sales') }}" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label class="form-label">Select Product</label>
+                        {{ form.product_id(class="form-select") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Select Customer</label>
+                        {{ form.customer_id(class="form-select") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        {{ form.quantity(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Payment Method</label>
+                        {{ form.payment_type(class="form-select") }}
+                    </div>
+                    {{ form.submit(class="btn btn-success w-100") }}
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Recent Transactions</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date</th>
+                                <th>Product</th>
+                                <th>Customer</th>
+                                <th>Method</th>
+                                <th>Qty</th>
+                                <th>Total Price</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for s in sales %}
+                            <tr>
+                                <td>{{ s.sale_date.strftime('%d %b %Y, %I:%M %p IST') }}</td>
+                                <td>{{ s.product.product_name }}</td>
+                                <td>{{ s.customer.customer_name }}</td>
+                                <td><span class="badge bg-secondary">{{ s.payment_type }}</span></td>
+                                <td>{{ s.quantity }}</td>
+                                <td><span class="text-success fw-bold">₹{{ "{:,.2f}".format(s.total_price) }}</span></td>
+                                <td>
+                                    <form action="{{ url_for('main.delete_sale', id=s.id) }}" method="post" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this sale? Inventory will be restored.');">
+                                        <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

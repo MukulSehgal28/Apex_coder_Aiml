@@ -1,0 +1,180 @@
+:root {
+    --bg-color: #f4f6f9;
+    --text-color: #495057;
+    --sidebar-bg-1: #0a192f;
+    --sidebar-bg-2: #112240;
+    --card-header-bg: #ffffff;
+    --border-color: #e9ecef;
+    --table-th-bg: #f8f9fa;
+    --chart-bg: transparent;
+    --warning-light-bg: #fff3cd;
+}
+
+[data-bs-theme="dark"] {
+    --bg-color: #121418;
+    --text-color: #d1d5db;
+    --sidebar-bg-1: #05080f;
+    --sidebar-bg-2: #0b111a;
+    --card-header-bg: var(--bs-card-bg);
+    --border-color: var(--bs-border-color);
+    --table-th-bg: var(--bs-tertiary-bg);
+    --chart-bg: #e9ecef;
+    --warning-light-bg: #3e3314;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 48px 0 0; 
+    box-shadow: 2px 0 10px rgba(0, 0, 0, .1);
+    background: linear-gradient(180deg, var(--sidebar-bg-1) 0%, var(--sidebar-bg-2) 100%) !important;
+    transition: background 0.3s ease;
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 48px);
+    padding-top: 1.5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: rgba(255, 255, 255, .7);
+    padding: 1rem 1.5rem;
+    margin: 0.25rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    color: #64ffda;
+    background-color: rgba(100, 255, 218, 0.1);
+    transform: translateX(5px);
+}
+
+.border-left-primary { border-left: .35rem solid #0d6efd !important; }
+.border-left-success { border-left: .35rem solid #198754 !important; }
+.border-left-info { border-left: .35rem solid #0dcaf0 !important; }
+.border-left-warning { border-left: .35rem solid #ffc107 !important; }
+.border-left-danger { border-left: .35rem solid #dc3545 !important; }
+.border-left-secondary { border-left: .35rem solid #6c757d !important; }
+
+.bg-warning-light {
+    background-color: var(--warning-light-bg) !important;
+    transition: background-color 0.3s ease;
+}
+
+.text-primary { color: #0d6efd !important; }
+
+.card {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08) !important;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header {
+    background-color: var(--card-header-bg);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 1rem 1rem 0 0 !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    transition: all 0.3s;
+    border-radius: 0.5rem;
+}
+
+.btn {
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    transform: translateY(-2px);
+}
+
+.table {
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.table th {
+    background-color: var(--table-th-bg);
+    color: var(--text-color);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.table td {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.03);
+}
+
+/* Custom chart containers */
+.chart-area {
+    position: relative;
+    height: 25rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--chart-bg);
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.chart-pie {
+    position: relative;
+    height: 25rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--chart-bg);
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.chart-area img, .chart-pie img {
+    max-height: 100%;
+    object-fit: contain;
+}
