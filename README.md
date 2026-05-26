@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Shop Insight Hub
 
 A professional Retail Analytics, Data Science, and Business Intelligence Platform.
@@ -69,3 +70,6 @@ A professional Retail Analytics, Data Science, and Business Intelligence Platfor
 
 
 
+=======
+# Apex_coder_Aiml
+>>>>>>> 5c3aeb18026914e0aadb548bbdbe98edbdb63a5c
