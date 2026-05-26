@@ -1,0 +1,17 @@
+# Virtual Environment
+.venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# Flask Instance
+instance/
+
+# Environment Variables
+.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+

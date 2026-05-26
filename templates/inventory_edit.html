@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Edit Inventory - {{ item.product.product_name }}</h6>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('main.edit_inventory', id=item.id) }}" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+                    <div class="mb-3">
+                        <label class="form-label">Stock Level</label>
+                        {{ form.stock_level(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Restock Threshold</label>
+                        {{ form.restock_threshold(class="form-control") }}
+                    </div>
+                    {{ form.submit(class="btn btn-primary w-100") }}
+                    <a href="{{ url_for('main.inventory') }}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Inventory Management</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" width="100%" cellspacing="0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Product Name</th>
+                        <th>Category</th>
+                        <th>Current Stock</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.product.id }}</td>
+                        <td>{{ item.product.product_name }}</td>
+                        <td>{{ item.product.category }}</td>
+                        <td>
+                            <span class="fs-5 {% if item.stock_level <= item.restock_threshold %}text-danger fw-bold{% endif %}">
+                                {{ item.stock_level }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if item.stock_level <= item.restock_threshold %}
+                                <span class="badge bg-danger">Low Stock - Restock Needed</span>
+                            {% else %}
+                                <span class="badge bg-success">In Stock</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('main.edit_inventory', id=item.id) }}" class="btn btn-sm btn-info text-white"><i class="fas fa-edit"></i> Edit Stock</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
