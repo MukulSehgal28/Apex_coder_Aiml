@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # Shop Insight Hub
 
 A professional Retail Analytics, Data Science, and Business Intelligence Platform.
@@ -14,7 +14,7 @@ A professional Retail Analytics, Data Science, and Business Intelligence Platfor
 - **Backend:** Python, Flask, Flask-SQLAlchemy, Flask-Login, Flask-WTF
 - **Database:** PostgreSQL (with SQLite fallback)
 - **Data Science:** Pandas, Matplotlib
-- **Frontend:** HTML5, CSS3, Bootstrap 5, Jinja2, Vanilla JS
+- **Frontend:** HTML5, CSS3, Bootstrap 5, JS
 
 ## Installation & Setup
 
