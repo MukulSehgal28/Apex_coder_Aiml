@@ -9,9 +9,10 @@
                 <span class="badge bg-success px-3 py-2">System Active</span>
             </div>
             <div class="card-body">
-                <p class="lead">Explore advanced Data Science and Machine Learning capabilities. This module brings predictive analytics directly into your business workflows.</p>
+                <p class="lead">Explore advanced Data Science and Machine Learning capabilities. This module brings
+                    predictive analytics directly into your business workflows.</p>
                 <hr>
-                
+
                 <div class="row mt-4">
                     <!-- Sales Prediction -->
                     <div class="col-md-6 mb-4">
@@ -23,13 +24,16 @@
                             <div class="text-center mt-2">
                                 <i class="fas fa-chart-line fa-3x text-primary mb-3"></i>
                                 <h5 class="fw-bold">Sales Prediction</h5>
-                                <p class="small text-muted px-2 mb-3">Predict transaction sales amounts using customer purchase patterns, quantity, pricing, and historical retail data.</p>
-                                
+                                <p class="small text-muted px-2 mb-3">Predict sales amounts using quantity, pricing,
+                                    customer age, and historical customer purchase data.</p>
+
                                 {% if predicted_sales and predicted_sales is number %}
                                 <div class="bg-light p-3 rounded text-start shadow-sm border border-primary">
-                                    <h6 class="fw-bold text-primary mb-2"><i class="fas fa-bolt text-warning"></i> Live Prediction Active</h6>
+                                    <h6 class="fw-bold text-primary mb-2"><i class="fas fa-bolt text-warning"></i> Live
+                                        Prediction Active</h6>
                                     <div class="small text-muted mb-2">
-                                        <span class="d-block"><strong>Inputs:</strong> Qty = {{ qty }} | Price = ₹{{ price }} | Age = {{ age }}</span>
+                                        <span class="d-block"><strong>Inputs:</strong> Qty = {{ qty }} | Price = ₹{{
+                                            price }} | Age = {{ age }}</span>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
                                         <span class="fw-bold text-dark">Predicted Sales Amount:</span>
@@ -38,36 +42,148 @@
                                 </div>
                                 {% elif predicted_sales %}
                                 <div class="bg-light p-3 rounded text-start shadow-sm border border-danger">
-                                    <h6 class="fw-bold text-danger mb-0"><i class="fas fa-exclamation-triangle"></i> Prediction Failed</h6>
+                                    <h6 class="fw-bold text-danger mb-0"><i class="fas fa-exclamation-triangle"></i>
+                                        Prediction Failed</h6>
                                     <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
                                         <span class="fw-bold text-dark">Status:</span>
                                         <span class="badge bg-danger fs-6 px-3 py-2">{{ predicted_sales }}</span>
                                     </div>
                                 </div>
                                 {% endif %}
-                                
+
                                 <form method="POST" action="{{ url_for('main.ai_insights') }}" class="mt-3 text-start">
+                                    <input type="hidden" name="form_type" value="linear">
                                     <div class="row g-2 mb-2">
                                         <div class="col-4">
                                             <label class="form-label small mb-0 fw-semibold text-dark">Quantity</label>
-                                            <input type="number" class="form-control form-control-sm" name="quantity" value="{{ qty }}" required>
+                                            <input type="number" class="form-control form-control-sm" name="quantity"
+                                                value="{{ qty }}" required>
                                         </div>
                                         <div class="col-4">
                                             <label class="form-label small mb-0 fw-semibold text-dark">Price (₹)</label>
-                                            <input type="number" step="0.01" class="form-control form-control-sm" name="price" value="{{ price }}" required>
+                                            <input type="number" step="0.01" class="form-control form-control-sm"
+                                                name="price" value="{{ price }}" required>
                                         </div>
                                         <div class="col-4">
                                             <label class="form-label small mb-0 fw-semibold text-dark">Age</label>
-                                            <input type="number" class="form-control form-control-sm" name="age" value="{{ age }}" required>
+                                            <input type="number" class="form-control form-control-sm" name="age"
+                                                value="{{ age }}" required>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold shadow-sm">Predict Sales</button>
-                                    <div class="form-text text-center small mt-2">Prediction powered by Linear Regression model.</div>
+                                    <button type="submit" class="btn btn-primary btn-sm w-100 fw-bold shadow-sm">Predict
+                                        Sales</button>
+                                    <div class="form-text text-center small mt-2">Prediction powered by Linear
+                                        Regression model.</div>
                                 </form>
                             </div>
                         </div>
                     </div>
-                    
+
+                    <!-- Logistic Regression prediction -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100 border-0 shadow-sm p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Logistic
+                                    Regression</span>
+                                <span class="badge bg-success px-3 py-2 rounded-pill">Active</span>
+                            </div>
+                            <div class="text-center mt-2">
+                                <i class="fas fa-bullseye fa-3x text-warning mb-3"></i>
+                                <h5 class="fw-bold">High/Low Sales Prediction</h5>
+                                <p class="small text-muted px-2 mb-3">Predict whether sales will be High or Low based on
+                                    transaction quantity, pricing, customer age, gender, and product category.</p>
+
+                                {% if predicted_class is not none %}
+                                {% if predicted_class == 1 %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-success mb-3">
+                                    <h6 class="fw-bold text-success mb-2"><i class="fas fa-check-circle"></i> High Sales
+                                        Prediction</h6>
+                                    <div class="small text-muted">
+                                        <span class="d-block"><strong>Inputs:</strong> Qty = {{ qty_log }} | Price = ₹{{
+                                            price_log }} | Age = {{ age_log }}</span>
+                                        <span class="d-block"><strong>Demographics:</strong> Gender = {% if gender_log
+                                            == 0 %}Male{% else %}Female{% endif %} | Category = {% if category_log == 0
+                                            %}Beauty{% elif category_log == 1 %}Clothing{% else %}Electronics{% endif
+                                            %}</span>
+                                    </div>
+                                </div>
+                                {% elif predicted_class == 0 %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-danger mb-3">
+                                    <h6 class="fw-bold text-danger mb-2"><i class="fas fa-times-circle"></i> Low Sales
+                                        Prediction</h6>
+                                    <div class="small text-muted">
+                                        <span class="d-block"><strong>Inputs:</strong> Qty = {{ qty_log }} | Price = ₹{{
+                                            price_log }} | Age = {{ age_log }}</span>
+                                        <span class="d-block"><strong>Demographics:</strong> Gender = {% if gender_log
+                                            == 0 %}Male{% else %}Female{% endif %} | Category = {% if category_log == 0
+                                            %}Beauty{% elif category_log == 1 %}Clothing{% else %}Electronics{% endif
+                                            %}</span>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-danger mb-3">
+                                    <h6 class="fw-bold text-danger mb-0"><i class="fas fa-exclamation-triangle"></i>
+                                        Prediction Failed</h6>
+                                    <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                        <span class="fw-bold text-dark">Status:</span>
+                                        <span class="badge bg-danger fs-6 px-3 py-2">{{ predicted_class }}</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endif %}
+
+                                <form method="POST" action="{{ url_for('main.ai_insights') }}" class="mt-3 text-start">
+                                    <input type="hidden" name="form_type" value="logistic">
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-4">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Quantity</label>
+                                            <input type="number" class="form-control form-control-sm" name="quantity"
+                                                value="{{ qty_log }}" required>
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Price (₹)</label>
+                                            <input type="number" step="0.01" class="form-control form-control-sm"
+                                                name="price" value="{{ price_log }}" required>
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Age</label>
+                                            <input type="number" class="form-control form-control-sm" name="age"
+                                                value="{{ age_log }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Gender</label>
+                                            <select class="form-select form-select-sm" name="gender" required>
+                                                <option value="0" {% if gender_log==0 %}selected{% endif %}>Male
+                                                </option>
+                                                <option value="1" {% if gender_log==1 %}selected{% endif %}>Female
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Product
+                                                Category</label>
+                                            <select class="form-select form-select-sm" name="category" required>
+                                                <option value="0" {% if category_log==0 %}selected{% endif %}>Beauty
+                                                </option>
+                                                <option value="1" {% if category_log==1 %}selected{% endif %}>Clothing
+                                                </option>
+                                                <option value="2" {% if category_log==2 %}selected{% endif %}>
+                                                    Electronics</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <button type="submit"
+                                        class="btn btn-warning btn-sm w-100 fw-bold shadow-sm text-dark">Predict
+                                        High/Low Sales</button>
+                                    <div class="form-text text-center small mt-2">Prediction powered by Logistic
+                                        Regression model.</div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Customer Segmentation -->
                     <div class="col-md-6 mb-4">
                         <div class="card h-100 border-0 shadow-sm p-4">
@@ -78,51 +194,190 @@
                             <div class="text-center mt-2">
                                 <i class="fas fa-users fa-3x text-info mb-3"></i>
                                 <h5 class="fw-bold">Customer Segmentation</h5>
-                                <p class="small text-muted px-2 mb-0">Group customers into Premium, Regular, and Low-Spending segments based on purchasing behavior and spending patterns.</p>
+                                <p class="small text-muted px-2 mb-3">Predict customer segments (Premium, Regular,
+                                    Discount Hunters, or Low Engagement) based on purchasing patterns.</p>
+
+                                {% if predicted_cluster is not none %}
+                                {% if predicted_cluster == 1 %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-success mb-3">
+                                    <h6 class="fw-bold text-success mb-2"><i class="fas fa-check-circle"></i> Premium
+                                        Customers (Cluster 1)</h6>
+                                    <div class="small text-muted">
+                                        <span class="d-block"><strong>Inputs:</strong> Spending = ₹{{ spending_kmeans }}
+                                            | Freq = {{ frequency_kmeans }}</span>
+                                        <span class="d-block"><strong>Metrics:</strong> Discount = {{ discount_kmeans
+                                            }}% | Qty = {{ quantity_kmeans }}</span>
+                                    </div>
+                                </div>
+                                {% elif predicted_cluster == 3 %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-primary mb-3">
+                                    <h6 class="fw-bold text-primary mb-2"><i class="fas fa-check-circle"></i> Regular
+                                        Customers (Cluster 3)</h6>
+                                    <div class="small text-muted">
+                                        <span class="d-block"><strong>Inputs:</strong> Spending = ₹{{ spending_kmeans }}
+                                            | Freq = {{ frequency_kmeans }}</span>
+                                        <span class="d-block"><strong>Metrics:</strong> Discount = {{ discount_kmeans
+                                            }}% | Qty = {{ quantity_kmeans }}</span>
+                                    </div>
+                                </div>
+                                {% elif predicted_cluster == 0 %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-warning mb-3">
+                                    <h6 class="fw-bold text-warning mb-2"><i class="fas fa-check-circle"></i> Discount
+                                        Hunters (Cluster 0)</h6>
+                                    <div class="small text-muted">
+                                        <span class="d-block"><strong>Inputs:</strong> Spending = ₹{{ spending_kmeans }}
+                                            | Freq = {{ frequency_kmeans }}</span>
+                                        <span class="d-block"><strong>Metrics:</strong> Discount = {{ discount_kmeans
+                                            }}% | Qty = {{ quantity_kmeans }}</span>
+                                    </div>
+                                </div>
+                                {% elif predicted_cluster == 2 %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-secondary mb-3">
+                                    <h6 class="fw-bold text-secondary mb-2"><i class="fas fa-times-circle"></i> Low
+                                        Engagement Customers (Cluster 2)</h6>
+                                    <div class="small text-muted">
+                                        <span class="d-block"><strong>Inputs:</strong> Spending = ₹{{ spending_kmeans }}
+                                            | Freq = {{ frequency_kmeans }}</span>
+                                        <span class="d-block"><strong>Metrics:</strong> Discount = {{ discount_kmeans
+                                            }}% | Qty = {{ quantity_kmeans }}</span>
+                                    </div>
+                                </div>
+                                {% else %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-danger mb-3">
+                                    <h6 class="fw-bold text-danger mb-0"><i class="fas fa-exclamation-triangle"></i>
+                                        Prediction Failed</h6>
+                                    <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                        <span class="fw-bold text-dark">Status:</span>
+                                        <span class="badge bg-danger fs-6 px-3 py-2">{{ predicted_cluster }}</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% endif %}
+
+                                <form method="POST" action="{{ url_for('main.ai_insights') }}" class="mt-3 text-start">
+                                    <input type="hidden" name="form_type" value="kmeans">
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-6">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Total Spending
+                                                (₹)</label>
+                                            <input type="number" step="0.01" class="form-control form-control-sm"
+                                                name="spending" value="{{ spending_kmeans }}" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Purchase
+                                                Frequency</label>
+                                            <input type="number" class="form-control form-control-sm" name="frequency"
+                                                value="{{ frequency_kmeans }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Average Discount
+                                                (%)</label>
+                                            <input type="number" step="0.01" class="form-control form-control-sm"
+                                                name="discount" value="{{ discount_kmeans }}" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label small mb-0 fw-semibold text-dark">Total
+                                                Quantity</label>
+                                            <input type="number" class="form-control form-control-sm" name="quantity"
+                                                value="{{ quantity_kmeans }}" required>
+                                        </div>
+                                    </div>
+                                    <button type="submit"
+                                        class="btn btn-info btn-sm w-100 fw-bold shadow-sm text-dark">Predict Customer
+                                        Segment</button>
+                                    <div class="form-text text-center small mt-2">Prediction powered by K-Means model.
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Customer Churn Prediction -->
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100 border-0 shadow-sm p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">Logistic</span>
-                                <span class="badge bg-secondary px-3 py-2 rounded-pill">Prototype</span>
-                            </div>
-                            <div class="text-center mt-2">
-                                <i class="fas fa-user-minus fa-3x text-warning mb-3"></i>
-                                <h5 class="fw-bold">Customer Churn Prediction</h5>
-                                <p class="small text-muted px-2 mb-0">Predict whether a customer is likely to become inactive based on transaction history and purchasing activity.</p>
-                            </div>
-                        </div>
-                    </div>
-                    
+
                     <!-- Future Sales Forecast -->
                     <div class="col-md-6 mb-4">
                         <div class="card h-100 border-0 shadow-sm p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <span class="badge bg-danger px-3 py-2 rounded-pill">Time Series</span>
-                                <span class="badge bg-secondary px-3 py-2 rounded-pill">Prototype</span>
+                                <span class="badge bg-success px-3 py-2 rounded-pill">Active</span>
                             </div>
                             <div class="text-center mt-2">
                                 <i class="fas fa-chart-area fa-3x text-danger mb-3"></i>
                                 <h5 class="fw-bold">Future Sales Forecast</h5>
-                                <p class="small text-muted px-2 mb-0">Forecast future revenue trends and sales growth using historical date-wise sales analytics.</p>
+                                <p class="small text-muted px-2 mb-3">Forecast future monthly and yearly sales using
+                                    historical sales trends and ARIMA time series analysis.</p>
+
+                                {% if arima_error %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-danger mb-3">
+                                    <h6 class="fw-bold text-danger mb-0"><i class="fas fa-exclamation-triangle"></i>
+                                        Forecast Error</h6>
+                                    <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                        <span class="fw-bold text-dark">Status:</span>
+                                        <span class="badge bg-danger fs-6 px-3 py-2"
+                                            style="white-space: normal; text-align: left;">{{ arima_error }}</span>
+                                    </div>
+                                </div>
+                                {% elif arima_forecast_active %}
+                                <div class="bg-light p-3 rounded text-start shadow-sm border border-danger mb-3">
+                                    <h6 class="fw-bold text-danger mb-2"><i class="fas fa-bolt text-warning"></i> Live
+                                        Forecast Active</h6>
+                                    <div class="small text-muted mb-2">
+                                        <span class="d-block"><strong>Selected Forecast Months:</strong> {{ forecast_months }} Month(s)</span>
+                                        <span class="d-block"><strong>Model:</strong> {{ arima_model_name }}</span>
+                                        <span class="d-block"><strong>Dataset Rows:</strong> {{ arima_rows }}</span>
+                                        <span class="d-block"><strong>Years:</strong> {{ arima_years }}</span>
+                                        <span class="d-block"><strong>Monthly Data Points:</strong> {{ arima_points
+                                            }}</span>
+                                        <span class="d-block"><strong>MAPE:</strong> {{ arima_mape }}</span>
+                                        <span class="d-block"><strong>Accuracy:</strong> {{ arima_accuracy }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top">
+                                        <span class="fw-bold text-dark">Predicted Revenue:</span>
+                                        <span class="badge bg-success fs-6 px-3 py-2">{{ arima_forecast_val }}</span>
+                                    </div>
+                                    {% if arima_chart_exists %}
+                                    <div class="mt-3 text-center">
+                                        <img src="{{ url_for('static', filename='charts/arima_forecast.png') }}?v={{ range(1, 10000) | random }}"
+                                            class="img-fluid rounded shadow-sm" alt="ARIMA Forecast Chart">
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                                <form method="POST" action="{{ url_for('main.ai_insights') }}" class="mt-3 text-start">
+                                    <input type="hidden" name="form_type" value="arima">
+                                    <div class="mb-3">
+                                        <label class="form-label small mb-1 fw-semibold text-dark">Forecast Months</label>
+                                        <select class="form-select form-select-sm" name="forecast_months" required>
+                                            <option value="1" {% if forecast_months == 1 %}selected{% endif %}>1 Month</option>
+                                            <option value="3" {% if forecast_months == 3 %}selected{% endif %}>3 Months</option>
+                                            <option value="6" {% if forecast_months == 6 %}selected{% endif %}>6 Months</option>
+                                            <option value="12" {% if forecast_months == 12 or not forecast_months %}selected{% endif %}>12 Months</option>
+                                            <option value="24" {% if forecast_months == 24 %}selected{% endif %}>24 Months</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger btn-sm w-100 fw-bold shadow-sm">Forecast
+                                        Future Sales</button>
+                                    <div class="form-text text-center small mt-2">Prediction powered by ARIMA model.
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="alert alert-info mt-3 d-flex align-items-center">
+                <!-- <div class="alert alert-info mt-3 d-flex align-items-center">
                     <i class="fas fa-info-circle fa-2x me-3"></i>
                     <div>
-                        <strong>Architecture Ready:</strong> The system structure already contains <code>/ml_models</code>, <code>/datasets</code>, and <code>/notebooks</code> directories waiting for model deployment. Built for Pandas, Scikit-Learn, and TensorFlow.
+                        <strong>Architecture Ready:</strong> The system structure already contains
+                        <code>/ml_models</code>, <code>/datasets</code>, and <code>/notebooks</code> directories waiting
+                        for model deployment. Built for Pandas, Scikit-Learn, and TensorFlow.
                     </div>
-                </div>
-                
+                </div> -->
+
                 <div class="text-center mt-5 mb-2">
-                    <p class="text-muted small mb-0 fw-semibold">AI-powered business intelligence and predictive retail analytics.</p>
+                    <p class="text-muted small mb-0 fw-semibold">AI-powered business intelligence and predictive retail
+                        analytics.</p>
                 </div>
             </div>
         </div>
